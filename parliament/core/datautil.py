@@ -28,7 +28,7 @@ def load_pol_pic(pol):
         raise Exception("Didn't work for %s" % pol.parlpage)
     imgurl = img['src']
     if '?' not in imgurl: # no query string
-        imgurl = urllib.quote(imgurl.encode('utf8')) # but there might be accents!
+        imgurl = imgurl.encode('utf8') # but there might be accents!
     if 'BlankMPPhoto' in imgurl:
         print "Blank photo"
         return

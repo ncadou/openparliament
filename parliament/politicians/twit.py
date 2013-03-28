@@ -18,10 +18,11 @@ def save_tweets():
     twitter_to_pol = dict([(int(i.value), i.politician) for i in PoliticianInfo.objects.filter(schema='twitter_id').select_related('politician')])
     screen_names = set(PoliticianInfo.objects.filter(schema='twitter').values_list('value', flat=True))
     twit = twitter.Twitter(auth=twitter.OAuth(**settings.TWITTER_OAUTH))
-    statuses = twit.lists.statuses(slug='mps', owner_screen_name='openparlca',
-                                   count=200)
-    statuses.reverse()
-    for status in statuses:
+    openparlca = twit.lists.statuses(owner_screen_name='openparlca',
+                                     count=200, slug='mps')
+    cdngov = twit.lists.statuses(owner_screen_name='CdnGov', count=200,
+                                 slug='canadian-mps')
+    for status in reversed(openparlca + cdngov):
         try:
             pol = twitter_to_pol[status['user']['id']]
         except KeyError:

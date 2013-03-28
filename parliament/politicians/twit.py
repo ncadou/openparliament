@@ -11,6 +11,9 @@ from parliament.activity import utils as activity
 import logging
 logger = logging.getLogger(__name__)
 
+_SPACES = re.compile(r'\s+', flags=re.UNICODE)
+
+
 def save_tweets():
     twitter_to_pol = dict([(int(i.value), i.politician) for i in PoliticianInfo.objects.filter(schema='twitter_id').select_related('politician')])
     screen_names = set(PoliticianInfo.objects.filter(schema='twitter').values_list('value', flat=True))
@@ -37,8 +40,8 @@ def save_tweets():
         # Twitter apparently escapes < > but not & " 
         # so I'm clunkily unescaping lt and gt then reescaping in the template
         text = status['text'].replace('&lt;', '<').replace('&gt;', '>')
-        activity.save_activity({'text': status['text']}, politician=pol,
-            date=date, guid=guid, variety='twitter')
+        activity.save_activity({'text': _SPACES.sub(' ', status['text'])},
+            politician=pol, date=date, guid=guid, variety='twitter')
             
 
         

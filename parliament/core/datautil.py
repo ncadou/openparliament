@@ -22,6 +22,9 @@ from parliament.elections.models import Election, Candidacy
 def load_pol_pic(pol):
     print "#%d: %s" % (pol.id, pol)
     print pol.parlpage
+    if pol.parlpage is None:
+        print 'Missing parl_id'
+        return
     soup = BeautifulSoup(urllib2.urlopen(pol.parlpage))
     img = soup.find('img', id='MasterPage_MasterPage_BodyContent_PageContent_Content_TombstoneContent_TombstoneContent_ucHeaderMP_imgPhoto')
     if not img:

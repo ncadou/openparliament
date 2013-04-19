@@ -22,7 +22,9 @@ def save_tweets():
                                      count=200, slug='mps')
     cdngov = twit.lists.statuses(owner_screen_name='CdnGov', count=200,
                                  slug='canadian-mps')
-    for status in reversed(openparlca + cdngov):
+    senate = twit.lists.statuses(owner_screen_name='cka_politwit', count=200,
+                                 slug='senators')
+    for status in reversed(openparlca + cdngov + senate):
         try:
             pol = twitter_to_pol[status['user']['id']]
         except KeyError:

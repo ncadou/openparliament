@@ -65,7 +65,8 @@ def _parse_date(d):
 
 
 def import_committee_documents(session):
-    for comm in Committee.objects.filter(sessions=session).order_by('-parent'):
+    crits = dict(sessions=session, house=True, senate=False)
+    for comm in Committee.objects.filter(**crits).order_by('-parent'):
         # subcommittees last
         import_committee_meetings(comm, session)
         import_committee_reports(comm, session)

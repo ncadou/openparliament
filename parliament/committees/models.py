@@ -26,9 +26,13 @@ class Committee(models.Model):
     name_fr = models.TextField(null=True, blank=True)
     short_name_fr = models.TextField(null=True, blank=True)
     slug = models.SlugField(unique=True)
+    parl_id = models.CharField(max_length=15, null=True, blank=True)
     parent = models.ForeignKey('self', related_name='subcommittees',
         blank=True, null=True)
     sessions = models.ManyToManyField(Session, through='CommitteeInSession')
+
+    house = models.BooleanField(db_index=True, default=True)
+    senate = models.BooleanField(db_index=True, default=False)
 
     display = models.BooleanField('Display on site?', db_index=True, default=True)
 
@@ -73,6 +77,10 @@ class Committee(models.Model):
             return self.name
         else:
             return self.name + u' Committee'
+
+    @property
+    def joint(self):
+        return self.house and self.senate
 
 class CommitteeInSession(models.Model):
     session = models.ForeignKey(Session)

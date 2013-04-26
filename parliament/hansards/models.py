@@ -62,6 +62,8 @@ class Document(models.Model):
     
     most_frequent_word = models.CharField(max_length=20, blank=True)
     wordcloud = models.ImageField(upload_to='autoimg/wordcloud', blank=True, null=True)
+    senate = models.BooleanField(default=False,
+        help_text='Senate-related document?')
 
     downloaded = models.BooleanField(default=False,
         help_text="Has the source data been downloaded?")

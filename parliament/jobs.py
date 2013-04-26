@@ -68,7 +68,7 @@ def hansards_load():
 def hansards_parse():
     for hansard in Document.objects.filter(document_type=Document.DEBATE)\
       .annotate(scount=models.Count('statement'))\
-      .exclude(scount__gt=0).exclude(skip_parsing=True).order_by('date').iterator():
+      .exclude(scount__gt=0).exclude(skip_parsing=True, senate=True).order_by('date').iterator():
         try:
             parl_document.import_document(hansard, interactive=False)
         except Exception, e:

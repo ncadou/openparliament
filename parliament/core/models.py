@@ -267,6 +267,7 @@ class Politician(Person):
     gender = models.CharField(max_length=1, blank=True, choices=GENDER_CHOICES)
     headshot = models.ImageField(upload_to='polpics', blank=True, null=True)
     slug = models.CharField(max_length=30, blank=True, db_index=True)
+    allow_subscriptions = models.BooleanField(db_index=True, default=True)
     
     objects = PoliticianManager()
         

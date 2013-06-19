@@ -22,6 +22,14 @@ def import_twitter_ids():
             pol = Politician.objects.get_by_name(unicode(member.name), session=current_session)
         except Politician.DoesNotExist:
             print "Could not find politician %r" % member.name
+        for social_net in ['facebook', 'flickr', 'youtube']:
+            current = pol.info().get(social_net)
+            new = unicode(getattr(member, social_net))
+            if new and current != new:
+                logger.error(u"%s change for %s: %r -> %r"
+                    % (social_net.capitalize(), pol, current, new))
+                if not current:
+                    pol.set_info(social_net, new)
         current = pol.info().get('twitter')
         new = str(member.twitter_username)
         if new and str(current).lower() != new.lower():
